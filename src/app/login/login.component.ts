@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms'
-import { Apollo, gql } from 'apollo-angular';
+import { Component } from "@angular/core";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { Apollo, gql } from "apollo-angular";
 
 @Component({
-    selector: 'app-login',
+    selector: "app-login",
     template: `
         <div class="flex flex-col items-center px-20 py-10 rounded-lg">
             <div>
@@ -29,8 +29,8 @@ import { Apollo, gql } from 'apollo-angular';
 })
 export class LoginComponent {
     loginForm = new FormGroup({
-        username: new FormControl('', Validators.required),
-        password: new FormControl('', Validators.required)
+        username: new FormControl("", Validators.required),
+        password: new FormControl("", Validators.required)
     });
 
     constructor(private apollo: Apollo) { }

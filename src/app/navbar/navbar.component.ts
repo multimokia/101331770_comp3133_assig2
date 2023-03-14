@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
 @Component({
-  selector: 'app-navbar',
-  template: `
+    selector: "app-navbar",
+    template: `
     <mat-toolbar
         class="
             bg-clip-padding
@@ -17,11 +17,11 @@ import { Component } from '@angular/core';
             float-left
         "
     >
-        <h1 class="text-white font-bold text-2xl">SUFFER.</h1>
+        <h1 class="text-white font-bold text-4xl">SUFFER.</h1>
     </mat-toolbar>
   `,
-  styles: [
-  ]
+    styles: [
+    ]
 })
 export class NavbarComponent {
 

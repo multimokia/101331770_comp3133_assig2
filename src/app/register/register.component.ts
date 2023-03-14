@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms'
-import { Apollo, gql } from 'apollo-angular';
+import { Component } from "@angular/core";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { Apollo, gql } from "apollo-angular";
 
 type SignupFormData = {
     username: string;
@@ -10,7 +10,7 @@ type SignupFormData = {
 }
 
 @Component({
-    selector: 'app-register',
+    selector: "app-register",
     template: `
     <div class="flex flex-col items-start px-20 py-10 rounded-lg space-y-2">
         <h1 class="text-2xl text-white">Register</h1>
@@ -42,10 +42,10 @@ type SignupFormData = {
 })
 export class RegisterComponent {
     registerForm = new FormGroup({
-        username: new FormControl('', Validators.required),
-        email: new FormControl('', [Validators.required, Validators.email]),
-        password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-        passwordConfirmation: new FormControl('', Validators.required)
+        username: new FormControl("", Validators.required),
+        email: new FormControl("", [Validators.required, Validators.email]),
+        password: new FormControl("", [Validators.required, Validators.minLength(8)]),
+        passwordConfirmation: new FormControl("", Validators.required)
     });
 
     constructor(private apollo: Apollo) { }

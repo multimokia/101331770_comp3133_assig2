@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component } from "@angular/core";
 
 @Component({
-    selector: 'app-root',
+    selector: "app-root",
     template: `
         <div class="w-full h-full font-[GeosansLight] bg-[url('https://www.pixelstalk.net/wp-content/uploads/2016/06/Ice-HD-Picture.jpeg')]">
             <app-navbar/>
@@ -32,7 +32,7 @@ import { Component } from '@angular/core';
         </div>
         <router-outlet></router-outlet>
     `,
-    styleUrls: ['./app.component.css']
+    styleUrls: ["./app.component.css"]
 })
 export class AppComponent {
 
