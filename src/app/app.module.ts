@@ -12,13 +12,15 @@ import { HttpLink } from 'apollo-angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { InMemoryCache } from '@apollo/client/core';
 import { NavbarComponent } from './navbar/navbar.component';
+import { EmployeelistComponent } from './employeelist/employeelist.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         LoginComponent,
         RegisterComponent,
-        NavbarComponent
+        NavbarComponent,
+        EmployeelistComponent
     ],
     imports: [
         BrowserModule,
