@@ -1,0 +1,19 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "overrides": [],
+  "parserOptions": {
+    "ecmaVersion": "latest"
+  },
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    "brace-style": ["error", "stroustrup", { "allowSingleLine": true }],
+    "indent": ["error", 4],
+    "semi": ["error", "always"],
+    "quotes": ["error", "double"],
+    "@typescript-eslint/prefer-ts-expect-error": "warn",
+    "@typescript-eslint/ban-ts-comment": "error"
+  }
+}
