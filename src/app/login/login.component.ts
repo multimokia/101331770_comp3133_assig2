@@ -16,10 +16,16 @@ import { Apollo, gql } from "apollo-angular";
                     <mat-form-field>
                         <mat-label>Username</mat-label>
                         <input matInput formControlName="username">
+                        <mat-error *ngIf="loginForm.controls.username.invalid">
+                            Username is required
+                        </mat-error>
                     </mat-form-field>
                     <mat-form-field>
                         <mat-label>Password</mat-label>
                         <input matInput type="password" formControlName="password">
+                        <mat-error *ngIf="loginForm.controls.password.invalid">
+                            Password is required
+                        </mat-error>
                     </mat-form-field>
                     <button mat-raised-button color="primary">Login</button>
                 </form>

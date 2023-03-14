@@ -2,13 +2,6 @@ import { Component } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Apollo, gql } from "apollo-angular";
 
-type SignupFormData = {
-    username: string;
-    email: string;
-    password: string;
-    passwordConfirmation: string;
-}
-
 @Component({
     selector: "app-register",
     template: `
@@ -22,18 +15,30 @@ type SignupFormData = {
             <mat-form-field>
                 <mat-label>Username</mat-label>
                 <input matInput formControlName="username">
+                <mat-error *ngIf="registerForm.controls.username.invalid">
+                    Username is required
+                </mat-error>
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Email</mat-label>
                 <input matInput formControlName="email">
+                <mat-error *ngIf="registerForm.controls.email.invalid">
+                    Email is required
+                </mat-error>
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Password</mat-label>
                 <input matInput type="password" formControlName="password">
+                <mat-error *ngIf="registerForm.controls.password.invalid">
+                    Password is required
+                </mat-error>
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Confirm Password</mat-label>
                 <input matInput type="password" formControlName="passwordConfirmation">
+                <mat-error *ngIf="registerForm.controls.passwordConfirmation.invalid">
+                    Password Confirmation is required
+                </mat-error>
             </mat-form-field>
             <button mat-raised-button color="primary">Register</button>
         </form>

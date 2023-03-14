@@ -34,3 +34,75 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mat-mdc-tab:not(.mat-mdc-tab-disabled) .mdc-tab__text-label, .mat-mdc-tab-link:not(.mat-mdc-tab-disabled).mdc-tab--active .mdc-tab__text-label {
     color: white !important;
 }
+
+.mdc-data-table__header-cell {
+    color: unset !important;
+    font-size: larger;
+}
+
+.mdc-data-table__cell {
+    color: #ffffffcc !important;
+}
+
+.mat-mdc-dialog-container .mdc-dialog__surface {
+    background-color: transparent !important;
+}
+
+/* .cdk-overlay-pane {
+    width: 100% !important;
+} */
+
+button[disabled="true"] .mat-mdc-paginator-icon {
+    fill: gray !important;
+}
+
+.mat-mdc-paginator-icon {
+    fill: white !important;
+}
+
+.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__trailing,
+.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mdc-notched-outline__leading {
+    border-color: white !important;
+}
+
+.mat-mdc-select-arrow, .mat-mdc-select-value {
+    color: white !important;
+}
+
+.mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input, .mat-mdc-radio-button .mdc-form-field {
+    color: unset !important;
+}
+
+.mat-mdc-radio-button.mat-accent {
+    --mdc-radio-disabled-selected-icon-color: #000;
+    --mdc-radio-disabled-unselected-icon-color: #000;
+    --mdc-radio-unselected-focus-icon-color: #212121;
+    --mdc-radio-unselected-hover-icon-color: #212121;
+    --mdc-radio-unselected-icon-color: rgba(61, 61, 61, 0.54);
+    --mdc-radio-unselected-pressed-icon-color: rgba(0, 0, 0, 0.54);
+    --mdc-radio-selected-focus-icon-color: #eeeeee;
+    --mdc-radio-selected-hover-icon-color: #eeeeee;
+    --mdc-radio-selected-icon-color: #eeeeee;
+    --mdc-radio-selected-pressed-icon-color: #eeeeee;
+    --mat-mdc-radio-ripple-color: #000;
+    --mat-mdc-radio-checked-ripple-color: #eeeeee;
+}
+
+.mat-mdc-dialog-container {
+  --mdc-dialog-container-color: white;
+  --mdc-dialog-with-divider-divider-color: rgba(0, 0, 0, 0.12);
+  --mdc-dialog-subhead-color: rgba(0, 0, 0, 0.87);
+  --mdc-dialog-supporting-text-color: rgba(0, 0, 0, 0.6);
+}
+
+.mat-form-field-appearance-legacy.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label:not(.mat-empty):not(.mat-form-field-empty) {
+    color: white !important;
+}
+
+.mdc-text-field:not(.mdc-text-field--disabled) .mdc-floating-label {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.mdc-text-field--invalid:not(.mdc-text-field--disabled) .mdc-floating-label {
+    color: var(--mdc-theme-error, #f44336) !important;
+  }

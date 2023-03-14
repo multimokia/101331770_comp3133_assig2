@@ -13,6 +13,18 @@ import { HttpClientModule } from "@angular/common/http";
 import { InMemoryCache } from "@apollo/client/core";
 import { NavbarComponent } from "./navbar/navbar.component";
 import { EmployeelistComponent } from "./employeelist/employeelist.component";
+import { EmployeeDetailsComponent } from "./employee-details/employee-details.component";
+import { EditEmployeeDetailsComponent } from "./edit-employee-details/edit-employee-details.component";
+import { ConfirmDialogueComponent } from "./confirm-dialogue/confirm-dialogue.component";
+import { CreateEmployeeComponent } from "./create-employee/create-employee.component";
+import { RouterModule, Routes } from "@angular/router";
+import { LoginRegisterSplashComponent } from "./login-register-splash/login-register-splash.component";
+
+const routes: Routes = [
+    { path: "", component: LoginRegisterSplashComponent, title: "Login" },
+    { path: "dashboard", component: EmployeelistComponent, title: "Dashboard" },
+    { path: "**", redirectTo: "" },
+];
 
 @NgModule({
     declarations: [
@@ -20,7 +32,12 @@ import { EmployeelistComponent } from "./employeelist/employeelist.component";
         LoginComponent,
         RegisterComponent,
         NavbarComponent,
-        EmployeelistComponent
+        EmployeelistComponent,
+        EmployeeDetailsComponent,
+        EditEmployeeDetailsComponent,
+        ConfirmDialogueComponent,
+        CreateEmployeeComponent,
+        LoginRegisterSplashComponent
     ],
     imports: [
         BrowserModule,
@@ -29,8 +46,10 @@ import { EmployeelistComponent } from "./employeelist/employeelist.component";
         MaterialModule,
         ReactiveFormsModule,
         ApolloModule,
-        HttpClientModule
+        HttpClientModule,
+        RouterModule.forRoot(routes)
     ],
+    exports: [RouterModule],
     providers: [
         {
             provide: APOLLO_OPTIONS,

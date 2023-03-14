@@ -17,7 +17,7 @@ import { Component } from "@angular/core";
             float-left
         "
     >
-        <h1 class="text-white font-bold text-4xl">SUFFER.</h1>
+        <h1 class="text-white font-bold text-4xl">AGONY.</h1>
     </mat-toolbar>
   `,
     styles: [

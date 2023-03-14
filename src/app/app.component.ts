@@ -7,30 +7,11 @@ import { Component } from "@angular/core";
             <app-navbar/>
             <div class="flex flex-col items-center justify-center h-full">
                 <div class="w-fit text-white">
-                    <mat-tab-group
-                        class="
-                            bg-clip-padding
-                            backdrop-filter
-                            backdrop-blur-xl
-                            bg-opacity-60
-                            bg-gray-500
-                            border
-                            border-gray-200/50
-                            rounded-lg
-                            shadow-lg
-                        "
-                    >
-                        <mat-tab label="LOGIN">
-                            <app-login/>
-                        </mat-tab>
-                        <mat-tab label="REGISTER">
-                            <app-register/>
-                        </mat-tab>
-                    </mat-tab-group>
+                    <router-outlet></router-outlet>
                 </div>
             </div>
         </div>
-        <router-outlet></router-outlet>
+
     `,
     styleUrls: ["./app.component.css"]
 })
