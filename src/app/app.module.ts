@@ -20,6 +20,7 @@ import { CreateEmployeeComponent } from "./create-employee/create-employee.compo
 import { RouterModule, Routes } from "@angular/router";
 import { LoginRegisterSplashComponent } from "./login-register-splash/login-register-splash.component";
 import { AuthGuardService } from "./auth-guard.service";
+import { MessageDialogueComponent } from "./message-dialogue/message-dialogue.component";
 
 const routes: Routes = [
     { path: "", component: LoginRegisterSplashComponent, title: "Login" },
@@ -38,7 +39,8 @@ const routes: Routes = [
         EditEmployeeDetailsComponent,
         ConfirmDialogueComponent,
         CreateEmployeeComponent,
-        LoginRegisterSplashComponent
+        LoginRegisterSplashComponent,
+        MessageDialogueComponent
     ],
     imports: [
         BrowserModule,

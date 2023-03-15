@@ -45,9 +45,12 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Email</mat-label>
-                    <input matInput formControlName="email" />
-                    <mat-error *ngIf="editEmployeeForm.get('email')?.hasError('required')">
+                    <input matInput formControlName="email" pattern="^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"/>
+                    <mat-error *ngIf="editEmployeeForm.controls.email.hasError('required')">
                         Email is required
+                    </mat-error>
+                    <mat-error *ngIf="editEmployeeForm.controls.email.hasError('pattern')">
+                        Email is invalid
                     </mat-error>
                 </mat-form-field>
                 <mat-label>Gender</mat-label>

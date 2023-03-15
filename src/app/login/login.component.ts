@@ -1,7 +1,9 @@
 import { Component } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { Apollo, gql } from "apollo-angular";
+import { MessageDialogueComponent } from "../message-dialogue/message-dialogue.component";
 
 @Component({
     selector: "app-login",
@@ -28,7 +30,7 @@ import { Apollo, gql } from "apollo-angular";
                             Password is required
                         </mat-error>
                     </mat-form-field>
-                    <button mat-raised-button color="primary">Login</button>
+                    <button mat-raised-button color="primary" [disabled]="loginForm.invalid">Login</button>
                 </form>
             </div>
         </div>
@@ -40,14 +42,14 @@ export class LoginComponent {
         password: new FormControl("", Validators.required)
     });
 
-    constructor(private apollo: Apollo, private router: Router) { }
+    constructor(private apollo: Apollo, private router: Router, private dialogue: MatDialog) { }
 
-    handleSubmit() {
+    async handleSubmit() {
         if (this.loginForm.invalid) {
             return;
         }
 
-        this.apollo.query({
+        await this.apollo.query({
             query: gql`
                 query {
                     Login(username: "${this.loginForm.value.username}", password: "${this.loginForm.value.password}") {
@@ -58,9 +60,26 @@ export class LoginComponent {
                 }
             `
         }).subscribe(result => {
-            // @ts-expect-error - I know what I'm doing
-            localStorage.setItem("user", JSON.stringify(result.data.Login));
-            this.router.navigate(["/dashboard"]);
+            // @ts-expect-error Login exists
+            if (result.data.Login === null) {
+                // Now we can show the error message
+                this.dialogue.open(MessageDialogueComponent, {
+                    data: {
+                        title: "Error",
+                        message: "Invalid credentials"
+                    }
+                });
+
+                return;
+            }
+
+            else {
+                // Store the user data in localStorage
+                // @ts-expect-error Login exists
+                localStorage.setItem("user", JSON.stringify(result.data.Login));
+                // Navigate to the home page
+                this.router.navigate(["/dashboard"]);
+            }
         });
     }
 }

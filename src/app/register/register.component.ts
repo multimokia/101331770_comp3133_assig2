@@ -1,6 +1,8 @@
 import { Component } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from "@angular/forms";
+import { MatDialog } from "@angular/material/dialog";
 import { Apollo, gql } from "apollo-angular";
+import { MessageDialogueComponent } from "../message-dialogue/message-dialogue.component";
 
 @Component({
     selector: "app-register",
@@ -15,32 +17,50 @@ import { Apollo, gql } from "apollo-angular";
             <mat-form-field>
                 <mat-label>Username</mat-label>
                 <input matInput formControlName="username">
-                <mat-error *ngIf="registerForm.controls.username.invalid">
+                <mat-error *ngIf="registerForm.controls.username.hasError('required')">
                     Username is required
+                </mat-error>
+                <mat-error *ngIf="registerForm.controls.username.hasError('duplicate')">
+                    Username already in use
                 </mat-error>
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Email</mat-label>
-                <input matInput formControlName="email">
-                <mat-error *ngIf="registerForm.controls.email.invalid">
+                <input matInput formControlName="email" pattern="^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$">
+                <mat-error *ngIf="registerForm.controls.email.hasError('required')">
                     Email is required
+                </mat-error>
+                <mat-error *ngIf="registerForm.controls.email.hasError('pattern')">
+                    Email is invalid
+                </mat-error>
+                <mat-error *ngIf="registerForm.controls.email.hasError('duplicate')">
+                    Email already in use
                 </mat-error>
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Password</mat-label>
                 <input matInput type="password" formControlName="password">
-                <mat-error *ngIf="registerForm.controls.password.invalid">
+                <mat-error *ngIf="registerForm.controls.password.hasError('required')">
                     Password is required
+                </mat-error>
+                <mat-error *ngIf="registerForm.controls.password.hasError('minlength')">
+                    Password must be at least 8 characters long
+                </mat-error>
+                <mat-error *ngIf="registerForm.controls.passwordConfirmation.hasError('mismatch')">
+                    Passwords do not match
                 </mat-error>
             </mat-form-field>
             <mat-form-field>
                 <mat-label>Confirm Password</mat-label>
                 <input matInput type="password" formControlName="passwordConfirmation">
-                <mat-error *ngIf="registerForm.controls.passwordConfirmation.invalid">
-                    Password Confirmation is required
+                <mat-error *ngIf="registerForm.controls.passwordConfirmation.hasError('required')">
+                    Confirm your password
+                </mat-error>
+                <mat-error *ngIf="registerForm.controls.passwordConfirmation.hasError('mismatch')">
+                    Passwords do not match
                 </mat-error>
             </mat-form-field>
-            <button mat-raised-button color="primary">Register</button>
+            <button mat-raised-button color="primary" [disabled]="registerForm.invalid">Register</button>
         </form>
   </div>
 `
@@ -53,14 +73,22 @@ export class RegisterComponent {
         passwordConfirmation: new FormControl("", Validators.required)
     });
 
-    constructor(private apollo: Apollo) { }
+    JSON = JSON;
+    constructor(private apollo: Apollo, public dialogue: MatDialog) { }
 
     handleSubmit() {
         if (this.registerForm.invalid) {
             return;
         }
 
+        if (this.registerForm.value.password !== this.registerForm.value.passwordConfirmation) {
+            this.registerForm.controls.passwordConfirmation.setErrors({ mismatch: true });
+            this.registerForm.controls.password.setErrors({ mismatch: true });
+            return;
+        }
+
         this.apollo.mutate({
+            errorPolicy: "all",
             mutation: gql`
                 mutation {
                     Signup(
@@ -74,7 +102,37 @@ export class RegisterComponent {
                 }
             `
         }).subscribe(result => {
-            console.log(result);
+            // @ts-expect-error - result.data has id and username
+            if (result.data.id) {
+                this.dialogue.open(MessageDialogueComponent, {
+                    data: {
+                        title: "Success",
+                        message: "You have successfully registered!"
+                    }
+                });
+            }
+
+            else if (result.errors) {
+                // Check for duplicate username
+                if (result.errors[0].message.includes("dup key: { username")) {
+                    this.registerForm.controls.username.setErrors({ duplicate: true });
+                    return;
+                }
+
+                // Check for duplicate email
+                if (result.errors[0].message.includes("dup key: { email")) {
+                    this.registerForm.controls.email.setErrors({ duplicate: true });
+                    return;
+                }
+
+                // Failsafe
+                this.dialogue.open(MessageDialogueComponent, {
+                    data: {
+                        title: "Error",
+                        message: "There was an error registering your account."
+                    }
+                });
+            }
         });
     }
 }

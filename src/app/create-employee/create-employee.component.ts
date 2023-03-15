@@ -44,7 +44,7 @@ import { Apollo, gql } from "apollo-angular";
                 </mat-form-field>
                 <mat-form-field>
                     <mat-label>Email</mat-label>
-                    <input matInput formControlName="email" />
+                    <input matInput formControlName="email" pattern="^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"/>
                     <mat-error *ngIf="createEmployeeForm.get('email')?.hasError('required')">
                         Email is required
                     </mat-error>
