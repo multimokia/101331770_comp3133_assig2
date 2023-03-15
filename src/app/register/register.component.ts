@@ -1,5 +1,5 @@
 import { Component } from "@angular/core";
-import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from "@angular/forms";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import { Apollo, gql } from "apollo-angular";
 import { MessageDialogueComponent } from "../message-dialogue/message-dialogue.component";
@@ -12,9 +12,9 @@ import { MessageDialogueComponent } from "../message-dialogue/message-dialogue.c
         <form
             [formGroup]="registerForm"
             (ngSubmit)="handleSubmit()"
-            class="flex flex-col items-center"
+            class="flex flex-col items-center space-y-3 w-full"
         >
-            <mat-form-field>
+            <mat-form-field class="w-full" subscriptSizing="dynamic">
                 <mat-label>Username</mat-label>
                 <input matInput formControlName="username">
                 <mat-error *ngIf="registerForm.controls.username.hasError('required')">
@@ -24,7 +24,7 @@ import { MessageDialogueComponent } from "../message-dialogue/message-dialogue.c
                     Username already in use
                 </mat-error>
             </mat-form-field>
-            <mat-form-field>
+            <mat-form-field class="w-full" subscriptSizing="dynamic">
                 <mat-label>Email</mat-label>
                 <input matInput formControlName="email" pattern="^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$">
                 <mat-error *ngIf="registerForm.controls.email.hasError('required')">
@@ -37,7 +37,7 @@ import { MessageDialogueComponent } from "../message-dialogue/message-dialogue.c
                     Email already in use
                 </mat-error>
             </mat-form-field>
-            <mat-form-field>
+            <mat-form-field class="w-full" subscriptSizing="dynamic">
                 <mat-label>Password</mat-label>
                 <input matInput type="password" formControlName="password">
                 <mat-error *ngIf="registerForm.controls.password.hasError('required')">
@@ -50,11 +50,14 @@ import { MessageDialogueComponent } from "../message-dialogue/message-dialogue.c
                     Passwords do not match
                 </mat-error>
             </mat-form-field>
-            <mat-form-field>
+            <mat-form-field class="w-full" subscriptSizing="dynamic">
                 <mat-label>Confirm Password</mat-label>
                 <input matInput type="password" formControlName="passwordConfirmation">
                 <mat-error *ngIf="registerForm.controls.passwordConfirmation.hasError('required')">
                     Confirm your password
+                </mat-error>
+                <mat-error *ngIf="registerForm.controls.passwordConfirmation.hasError('minlength')">
+                    Password must be at least 8 characters long
                 </mat-error>
                 <mat-error *ngIf="registerForm.controls.passwordConfirmation.hasError('mismatch')">
                     Passwords do not match
@@ -70,7 +73,7 @@ export class RegisterComponent {
         username: new FormControl("", Validators.required),
         email: new FormControl("", [Validators.required, Validators.email]),
         password: new FormControl("", [Validators.required, Validators.minLength(8)]),
-        passwordConfirmation: new FormControl("", Validators.required)
+        passwordConfirmation: new FormControl("", [Validators.required, Validators.minLength(8)])
     });
 
     JSON = JSON;

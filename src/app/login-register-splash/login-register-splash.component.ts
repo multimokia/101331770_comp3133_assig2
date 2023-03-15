@@ -14,6 +14,7 @@ import { Component } from "@angular/core";
                 border-gray-200/50
                 rounded-lg
                 shadow-lg
+                w-[30vw]
             "
         >
             <mat-tab label="LOGIN">

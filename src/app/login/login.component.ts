@@ -9,21 +9,21 @@ import { MessageDialogueComponent } from "../message-dialogue/message-dialogue.c
     selector: "app-login",
     template: `
         <div class="flex flex-col items-center px-20 py-10 rounded-lg">
-            <div>
+            <div class="w-full">
                 <h1 class="text-2xl text-white w-full text-left">Login</h1>
                 <form
                     [formGroup]="loginForm"
                     (ngSubmit)="handleSubmit()"
                     class="flex flex-col items-center"
                 >
-                    <mat-form-field>
+                    <mat-form-field class="w-full">
                         <mat-label>Username</mat-label>
                         <input matInput formControlName="username">
                         <mat-error *ngIf="loginForm.controls.username.invalid">
                             Username is required
                         </mat-error>
                     </mat-form-field>
-                    <mat-form-field>
+                    <mat-form-field class="w-full">
                         <mat-label>Password</mat-label>
                         <input matInput type="password" formControlName="password">
                         <mat-error *ngIf="loginForm.controls.password.invalid">
