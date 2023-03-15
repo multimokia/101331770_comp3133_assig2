@@ -111,3 +111,11 @@ button[disabled="true"] .mat-mdc-paginator-icon {
     --mdc-text-button-label-text-color: white !important;
     --mdc-outlined-button-label-text-color: white !important;
 }
+
+.mat-tab-body {
+    transition: 0.3 ease-out;
+}
+
+.mat-mdc-tab-body-content {
+    scrollbar-width: none;
+}

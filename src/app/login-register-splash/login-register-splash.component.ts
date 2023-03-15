@@ -16,12 +16,13 @@ import { Component } from "@angular/core";
                 shadow-lg
                 w-[30vw]
             "
+            dynamicHeight="true"
         >
             <mat-tab label="LOGIN">
                 <app-login/>
             </mat-tab>
             <mat-tab label="REGISTER">
-                <app-register/>
+                <app-register class="overflow-hidden"/>
             </mat-tab>
         </mat-tab-group>
   `,

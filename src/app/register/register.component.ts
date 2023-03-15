@@ -7,7 +7,7 @@ import { MessageDialogueComponent } from "../message-dialogue/message-dialogue.c
 @Component({
     selector: "app-register",
     template: `
-    <div class="flex flex-col items-start px-20 py-10 rounded-lg space-y-2">
+    <div class="flex flex-col items-start px-20 py-10 rounded-lg space-y-2 overflow-hidden">
         <h1 class="text-2xl text-white">Register</h1>
         <form
             [formGroup]="registerForm"
