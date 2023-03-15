@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { Router } from "@angular/router";
 import { Apollo, gql } from "apollo-angular";
 
 @Component({
@@ -39,7 +40,7 @@ export class LoginComponent {
         password: new FormControl("", Validators.required)
     });
 
-    constructor(private apollo: Apollo) { }
+    constructor(private apollo: Apollo, private router: Router) { }
 
     handleSubmit() {
         if (this.loginForm.invalid) {
@@ -52,11 +53,14 @@ export class LoginComponent {
                     Login(username: "${this.loginForm.value.username}", password: "${this.loginForm.value.password}") {
                         id
                         username
+                        email
                     }
                 }
             `
         }).subscribe(result => {
-            console.log(result);
+            // @ts-expect-error - I know what I'm doing
+            localStorage.setItem("user", JSON.stringify(result.data.Login));
+            this.router.navigate(["/dashboard"]);
         });
     }
 }

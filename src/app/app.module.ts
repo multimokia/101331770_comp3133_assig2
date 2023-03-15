@@ -19,10 +19,11 @@ import { ConfirmDialogueComponent } from "./confirm-dialogue/confirm-dialogue.co
 import { CreateEmployeeComponent } from "./create-employee/create-employee.component";
 import { RouterModule, Routes } from "@angular/router";
 import { LoginRegisterSplashComponent } from "./login-register-splash/login-register-splash.component";
+import { AuthGuardService } from "./auth-guard.service";
 
 const routes: Routes = [
     { path: "", component: LoginRegisterSplashComponent, title: "Login" },
-    { path: "dashboard", component: EmployeelistComponent, title: "Dashboard" },
+    { path: "dashboard", component: EmployeelistComponent, title: "Dashboard", canActivate: [ AuthGuardService ] },
     { path: "**", redirectTo: "" },
 ];
 

@@ -106,3 +106,8 @@ button[disabled="true"] .mat-mdc-paginator-icon {
 .mdc-text-field--invalid:not(.mdc-text-field--disabled) .mdc-floating-label {
     color: var(--mdc-theme-error, #f44336) !important;
   }
+
+.mat-toolbar .mat-mdc-button-base.mat-unthemed {
+    --mdc-text-button-label-text-color: white !important;
+    --mdc-outlined-button-label-text-color: white !important;
+}
