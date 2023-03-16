@@ -105,8 +105,9 @@ export class RegisterComponent {
                 }
             `
         }).subscribe(result => {
+            console.table(result);
             // @ts-expect-error - result.data has id and username
-            if (result.data.id) {
+            if (result.data.Signup.id) {
                 this.dialogue.open(MessageDialogueComponent, {
                     data: {
                         title: "Success",
