@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { Router } from "@angular/router";
 
 @Component({
     selector: "app-login-register-splash",
@@ -30,5 +31,11 @@ import { Component } from "@angular/core";
     ]
 })
 export class LoginRegisterSplashComponent {
-
+    constructor(private router: Router) { }
+    ngOnInit() {
+        // If the user is already logged in, redirect them to the home page
+        if (localStorage.getItem("user")) {
+            this.router.navigate(["/dashboard"]);
+        }
+    }
 }
