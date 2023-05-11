@@ -8,6 +8,7 @@ import { CreateEmployeeComponent } from "../create-employee/create-employee.comp
 import { EditEmployeeDetailsComponent } from "../edit-employee-details/edit-employee-details.component";
 import { EmployeeDetailsComponent } from "../employee-details/employee-details.component";
 import { Employee } from "../shared/types/Employee";
+import { CookieService } from "ngx-cookie-service";
 
 type GetAllEmployeesQueryResponse = {
     GetAllEmployees: Employee[];
@@ -100,7 +101,11 @@ export class EmployeelistComponent implements OnInit {
     employeesDataSource: MatTableDataSource<Employee> = new MatTableDataSource<Employee>();
     employeeQueryRef: QueryRef<GetAllEmployeesQueryResponse> | undefined;
 
-    constructor(private apollo: Apollo, public dialogue: MatDialog) { }
+    constructor(
+        private apollo: Apollo,
+        private cookieService: CookieService,
+        public dialogue: MatDialog
+    ) { }
 
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -127,7 +132,12 @@ export class EmployeelistComponent implements OnInit {
                         salary
                     }
                 }
-            `
+            `,
+            context: {
+                headers: {
+                    authorization: `Bearer ${this.cookieService.get("user_token")}`
+                }
+            }
         }).valueChanges.subscribe(result => {
             this.employeesDataSource.data = result.data.GetAllEmployees;
         });
@@ -140,6 +150,7 @@ export class EmployeelistComponent implements OnInit {
     }
 
     handleEditButtonClick(employee: Employee) {
+        console.log(employee);
         this.dialogue.open(EditEmployeeDetailsComponent, {
             data: employee
         });
@@ -175,6 +186,11 @@ export class EmployeelistComponent implements OnInit {
                             }
                         `
                     }],
+                    context: {
+                        headers: {
+                            authorization: `Bearer ${this.cookieService.get("user_token")}`
+                        }
+                    }
                 }).subscribe();
             }
         });

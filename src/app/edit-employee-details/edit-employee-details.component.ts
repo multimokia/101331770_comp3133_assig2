@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Apollo, gql } from "apollo-angular";
 import { Employee } from "../shared/types/Employee";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { CookieService } from "ngx-cookie-service";
 
 @Component({
     selector: "app-edit-employee-details",
@@ -94,6 +95,7 @@ export class EditEmployeeDetailsComponent {
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: Employee,
         private apollo: Apollo,
+        private cookieService: CookieService,
         public dialogueRef: MatDialogRef<EditEmployeeDetailsComponent>
     ) { }
 
@@ -134,7 +136,12 @@ export class EditEmployeeDetailsComponent {
                         }
                     }
                 `
-            }]
+            }],
+            context: {
+                headers: {
+                    authorization: `Bearer ${this.cookieService.get("user_token")}`
+                }
+            }
         }).subscribe();
 
         this.dialogueRef.close();

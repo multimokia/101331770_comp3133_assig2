@@ -2,6 +2,7 @@ import { Component } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
 import { Apollo, gql } from "apollo-angular";
+import { CookieService } from "ngx-cookie-service";
 
 @Component({
     selector: "app-create-employee",
@@ -92,6 +93,7 @@ export class CreateEmployeeComponent {
 
     constructor(
         private apollo: Apollo,
+        private cookieService: CookieService,
         public dialogueRef: MatDialogRef<CreateEmployeeComponent>
     ) { }
 
@@ -131,7 +133,12 @@ export class CreateEmployeeComponent {
                         }
                     }
                 `
-            }]
+            }],
+            context: {
+                headers: {
+                    authorization: `Bearer ${this.cookieService.get("user_token")}`
+                }
+            }
         }).subscribe();
 
         this.dialogueRef.close();

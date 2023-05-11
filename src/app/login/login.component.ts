@@ -4,6 +4,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
 import { Apollo, gql } from "apollo-angular";
 import { MessageDialogueComponent } from "../message-dialogue/message-dialogue.component";
+import { CookieService } from "ngx-cookie-service";
 
 @Component({
     selector: "app-login",
@@ -42,20 +43,26 @@ export class LoginComponent {
         password: new FormControl("", Validators.required)
     });
 
-    constructor(private apollo: Apollo, private router: Router, private dialogue: MatDialog) { }
+    constructor(
+        private apollo: Apollo,
+        private router: Router,
+        private dialogue: MatDialog,
+        private cookieService: CookieService
+    ) { }
 
     async handleSubmit() {
         if (this.loginForm.invalid) {
             return;
         }
 
-        await this.apollo.query({
+        this.apollo.query({
             query: gql`
                 query {
                     Login(username: "${this.loginForm.value.username}", password: "${this.loginForm.value.password}") {
                         id
                         username
                         email
+                        token
                     }
                 }
             `
@@ -76,7 +83,7 @@ export class LoginComponent {
             else {
                 // Store the user data in localStorage
                 // @ts-expect-error Login exists
-                localStorage.setItem("user", JSON.stringify(result.data.Login));
+                this.cookieService.set("user_token", result.data.Login.token);
                 // Navigate to the home page
                 this.router.navigate(["/dashboard"]);
             }

@@ -21,6 +21,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { LoginRegisterSplashComponent } from "./login-register-splash/login-register-splash.component";
 import { AuthGuardService } from "./auth-guard.service";
 import { MessageDialogueComponent } from "./message-dialogue/message-dialogue.component";
+import { CookieService } from "ngx-cookie-service";
 
 const routes: Routes = [
     { path: "", component: LoginRegisterSplashComponent, title: "Login" },
@@ -50,7 +51,7 @@ const routes: Routes = [
         ReactiveFormsModule,
         ApolloModule,
         HttpClientModule,
-        RouterModule.forRoot(routes)
+        RouterModule.forRoot(routes),
     ],
     exports: [RouterModule],
     providers: [
@@ -66,6 +67,7 @@ const routes: Routes = [
             },
             deps: [HttpLink],
         },
+        CookieService
     ],
     bootstrap: [AppComponent]
 })

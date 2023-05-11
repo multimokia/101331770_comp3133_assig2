@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { CookieService } from "ngx-cookie-service";
 
 @Component({
     selector: "app-navbar",
@@ -20,7 +21,7 @@ import { Component } from "@angular/core";
             space-x-6
         "
     >
-        <h1 class="text-white font-bold text-4xl">AGONY.</h1>
+        <h1 class="text-white font-bold text-4xl">MOONLIGHT.</h1>
         <h2 class="text-gray-200 font-bold text-2xl italic" *ngIf="!!getUserName()">{{ getUserName() }}</h2>
         <div class="flex flex-row flex-grow justify-end">
             <button mat-button routerLink="/" *ngIf="!!getUserName()" (click)="logout()">Logout <mat-icon>logout</mat-icon></button>
@@ -31,17 +32,19 @@ import { Component } from "@angular/core";
     ]
 })
 export class NavbarComponent {
+    constructor(private cookieService: CookieService) { }
+
     public getUserName(): string {
-        const user = localStorage.getItem("user");
+        const user = this.cookieService.get("user_token");
 
         if (!user) {
             return "";
         }
 
-        return JSON.parse(user).username;
+        return "temp";
     }
 
     public logout(): void {
-        localStorage.removeItem("user");
+        this.cookieService.delete("user_token");
     }
 }
