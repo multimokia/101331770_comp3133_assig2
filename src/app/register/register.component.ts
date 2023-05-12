@@ -1,7 +1,6 @@
 import { Component } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
-import { Apollo, gql } from "apollo-angular";
 import { MessageDialogueComponent } from "../message-dialogue/message-dialogue.component";
 import { AuthApiServiceService } from "src/app/auth-api-service.service";
 import { catchError } from "rxjs";
