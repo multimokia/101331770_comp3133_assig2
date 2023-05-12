@@ -3,6 +3,9 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import { Apollo, gql } from "apollo-angular";
 import { MessageDialogueComponent } from "../message-dialogue/message-dialogue.component";
+import { AuthApiServiceService } from "src/app/auth-api-service.service";
+import { catchError } from "rxjs";
+import { HttpErrorResponse } from "@angular/common/http";
 
 @Component({
     selector: "app-register",
@@ -77,7 +80,7 @@ export class RegisterComponent {
     });
 
     JSON = JSON;
-    constructor(private apollo: Apollo, public dialogue: MatDialog) { }
+    constructor(private auth: AuthApiServiceService, public dialogue: MatDialog) { }
 
     handleSubmit() {
         if (this.registerForm.invalid) {
@@ -90,43 +93,20 @@ export class RegisterComponent {
             return;
         }
 
-        this.apollo.mutate({
-            errorPolicy: "all",
-            mutation: gql`
-                mutation {
-                    Signup(
-                        username: "${this.registerForm.value.username}",
-                        email: "${this.registerForm.value.email}",
-                        password: "${this.registerForm.value.password}"
-                    ) {
-                        id
-                        username
-                    }
-                }
-            `
-        }).subscribe(result => {
-            console.table(result);
-            // @ts-expect-error - result.data has id and username
-            if (result.data.Signup.id) {
-                this.dialogue.open(MessageDialogueComponent, {
-                    data: {
-                        title: "Success",
-                        message: "You have successfully registered!"
-                    }
-                });
-            }
-
-            else if (result.errors) {
+        this.auth.register(
+            this.registerForm.value.username as string,
+            this.registerForm.value.email as string,
+            this.registerForm.value.password as string
+        )
+            .pipe(catchError((error: HttpErrorResponse) => {
                 // Check for duplicate username
-                if (result.errors[0].message.includes("dup key: { username")) {
+                if (error.error.includes("dup key: { username")) {
                     this.registerForm.controls.username.setErrors({ duplicate: true });
-                    return;
                 }
 
                 // Check for duplicate email
-                if (result.errors[0].message.includes("dup key: { email")) {
+                if (error.error.includes("dup key: { email")) {
                     this.registerForm.controls.email.setErrors({ duplicate: true });
-                    return;
                 }
 
                 // Failsafe
@@ -136,7 +116,16 @@ export class RegisterComponent {
                         message: "There was an error registering your account."
                     }
                 });
-            }
-        });
+
+                throw error;
+            }))
+            .subscribe(result => {
+                this.dialogue.open(MessageDialogueComponent, {
+                    data: {
+                        title: "Success",
+                        message: `Account ${result.username} has been successfully registered!`
+                    }
+                });
+            });
     }
 }
