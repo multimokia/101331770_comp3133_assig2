@@ -133,12 +133,7 @@ export class CreateEmployeeComponent {
                         }
                     }
                 `
-            }],
-            context: {
-                headers: {
-                    authorization: `Bearer ${this.cookieService.get("user_token")}`
-                }
-            }
+            }]
         }).subscribe();
 
         this.dialogueRef.close();

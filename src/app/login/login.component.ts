@@ -2,9 +2,12 @@ import { Component } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
-import { Apollo, gql } from "apollo-angular";
 import { MessageDialogueComponent } from "../message-dialogue/message-dialogue.component";
 import { CookieService } from "ngx-cookie-service";
+import { AuthApiServiceService } from "src/app/auth-api-service.service";
+import { User } from "src/app/shared/types/User";
+import { HttpErrorResponse } from "@angular/common/http";
+import { catchError } from "rxjs";
 
 @Component({
     selector: "app-login",
@@ -44,7 +47,7 @@ export class LoginComponent {
     });
 
     constructor(
-        private apollo: Apollo,
+        private auth: AuthApiServiceService,
         private router: Router,
         private dialogue: MatDialog,
         private cookieService: CookieService
@@ -55,38 +58,27 @@ export class LoginComponent {
             return;
         }
 
-        this.apollo.query({
-            query: gql`
-                query {
-                    Login(username: "${this.loginForm.value.username}", password: "${this.loginForm.value.password}") {
-                        id
-                        username
-                        email
-                        token
-                    }
+        this.auth.login(
+            this.loginForm.value.username as string,
+            this.loginForm.value.password as string
+        )
+            .pipe(
+                catchError((error: HttpErrorResponse) => {
+                    this.dialogue.open(MessageDialogueComponent, {
+                        data: {
+                            title: "Error",
+                            message: error.error
+                        }
+                    });
+
+                    throw error;
+                })
+            )
+            .subscribe(
+                (data: User) => {
+                    this.cookieService.set("user_token", data.token);
+                    this.router.navigate(["/dashboard"]);
                 }
-            `
-        }).subscribe(result => {
-            // @ts-expect-error Login exists
-            if (result.data.Login === null) {
-                // Now we can show the error message
-                this.dialogue.open(MessageDialogueComponent, {
-                    data: {
-                        title: "Error",
-                        message: "Invalid credentials"
-                    }
-                });
-
-                return;
-            }
-
-            else {
-                // Store the user data in localStorage
-                // @ts-expect-error Login exists
-                this.cookieService.set("user_token", result.data.Login.token);
-                // Navigate to the home page
-                this.router.navigate(["/dashboard"]);
-            }
-        });
+            );
     }
 }

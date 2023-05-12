@@ -132,12 +132,7 @@ export class EmployeelistComponent implements OnInit {
                         salary
                     }
                 }
-            `,
-            context: {
-                headers: {
-                    authorization: `Bearer ${this.cookieService.get("user_token")}`
-                }
-            }
+            `
         }).valueChanges.subscribe(result => {
             this.employeesDataSource.data = result.data.GetAllEmployees;
         });
@@ -185,12 +180,7 @@ export class EmployeelistComponent implements OnInit {
                                 }
                             }
                         `
-                    }],
-                    context: {
-                        headers: {
-                            authorization: `Bearer ${this.cookieService.get("user_token")}`
-                        }
-                    }
+                    }]
                 }).subscribe();
             }
         });

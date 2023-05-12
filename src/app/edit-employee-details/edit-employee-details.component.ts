@@ -136,12 +136,7 @@ export class EditEmployeeDetailsComponent {
                         }
                     }
                 `
-            }],
-            context: {
-                headers: {
-                    authorization: `Bearer ${this.cookieService.get("user_token")}`
-                }
-            }
+            }]
         }).subscribe();
 
         this.dialogueRef.close();

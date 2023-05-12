@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { CookieService } from "ngx-cookie-service";
+import { AuthApiServiceService } from "src/app/auth-api-service.service";
 
 @Component({
     selector: "app-navbar",
@@ -21,10 +22,10 @@ import { CookieService } from "ngx-cookie-service";
             space-x-6
         "
     >
-        <h1 class="text-white font-bold text-4xl">MOONLIGHT.</h1>
-        <h2 class="text-gray-200 font-bold text-2xl italic" *ngIf="!!getUserName()">{{ getUserName() }}</h2>
+        <h1 class="text-white italic text-4xl">FERMATA.</h1>
+        <h2 class="text-gray-200 font-bold text-2xl italic" *ngIf="!!username">{{ username }}</h2>
         <div class="flex flex-row flex-grow justify-end">
-            <button mat-button routerLink="/" *ngIf="!!getUserName()" (click)="logout()">Logout <mat-icon>logout</mat-icon></button>
+            <button mat-button routerLink="/" *ngIf="!!username" (click)="logout()">Logout <mat-icon>logout</mat-icon></button>
         </div>
     </mat-toolbar>
   `,
@@ -32,19 +33,39 @@ import { CookieService } from "ngx-cookie-service";
     ]
 })
 export class NavbarComponent {
-    constructor(private cookieService: CookieService) { }
+    username = "";
+    constructor(
+        private cookieService: CookieService,
+        private auth: AuthApiServiceService
+    ) { }
 
-    public getUserName(): string {
-        const user = this.cookieService.get("user_token");
+    public fetchUsername() {
+        // Only run this if we haven't already gotten the username
+        if (this.username) {
+            return this.username;
+        }
 
-        if (!user) {
+        const token = this.cookieService.get("user_token");
+
+        if (!token) {
+            this.username = "";
             return "";
         }
 
-        return "temp";
+        this.auth.getUser(token)
+            .subscribe((user) => {
+                this.username = user.username;
+            });
+
+        return this.username;
     }
 
     public logout(): void {
         this.cookieService.delete("user_token");
+        this.username = "";
+    }
+
+    ngOnInit(): void {
+        this.fetchUsername();
     }
 }

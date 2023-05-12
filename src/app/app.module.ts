@@ -9,7 +9,7 @@ import { MaterialModule } from "./material/material.module";
 import { RegisterComponent } from "./register/register.component";
 import { APOLLO_OPTIONS, ApolloModule } from "apollo-angular";
 import { HttpLink } from "apollo-angular/http";
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HttpHeaders } from "@angular/common/http";
 import { InMemoryCache } from "@apollo/client/core";
 import { NavbarComponent } from "./navbar/navbar.component";
 import { EmployeelistComponent } from "./employeelist/employeelist.component";
@@ -51,23 +51,24 @@ const routes: Routes = [
         ReactiveFormsModule,
         ApolloModule,
         HttpClientModule,
-        RouterModule.forRoot(routes),
+        RouterModule.forRoot(routes)
     ],
     exports: [RouterModule],
     providers: [
+        CookieService,
         {
             provide: APOLLO_OPTIONS,
-            useFactory(httpLink: HttpLink) {
+            useFactory(httpLink: HttpLink, cookieService: CookieService) {
                 return {
-                    cache: new InMemoryCache(),
                     link: httpLink.create({
                         uri: "http://localhost:7880/graphql",
+                        headers: new HttpHeaders().set("authorization", `Bearer ${cookieService.get("user_token")}`)
                     }),
+                    cache: new InMemoryCache(),
                 };
             },
-            deps: [HttpLink],
+            deps: [HttpLink, CookieService],
         },
-        CookieService
     ],
     bootstrap: [AppComponent]
 })
