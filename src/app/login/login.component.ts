@@ -77,6 +77,7 @@ export class LoginComponent {
             .subscribe(
                 (data: User) => {
                     this.cookieService.set("user_token", data.token);
+                    this.cookieService.set("user_name", data.username);
                     this.router.navigate(["/dashboard"]);
                 }
             );

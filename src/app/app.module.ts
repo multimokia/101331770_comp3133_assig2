@@ -22,6 +22,7 @@ import { LoginRegisterSplashComponent } from "./login-register-splash/login-regi
 import { AuthGuardService } from "./auth-guard.service";
 import { MessageDialogueComponent } from "./message-dialogue/message-dialogue.component";
 import { CookieService } from "ngx-cookie-service";
+import { setContext } from "@apollo/client/link/context";
 
 const routes: Routes = [
     { path: "", component: LoginRegisterSplashComponent, title: "Login" },
@@ -59,11 +60,26 @@ const routes: Routes = [
         {
             provide: APOLLO_OPTIONS,
             useFactory(httpLink: HttpLink, cookieService: CookieService) {
+                const http = httpLink.create({
+                    uri: "http://localhost:7880/graphql",
+                    headers: new HttpHeaders().set("authorization", `Bearer ${cookieService.get("user_token")}`)
+                });
+
+                const authLink = setContext((_, { headers }) => {
+                    // get the authentication token from local storage if it exists
+                    const token = cookieService.get("user_token");
+
+                    // return the headers to the context so httpLink can read them
+                    return {
+                        headers: {
+                            ...headers,
+                            authorization: token ? `Bearer ${token}` : "",
+                        }
+                    };
+                });
+
                 return {
-                    link: httpLink.create({
-                        uri: "http://localhost:7880/graphql",
-                        headers: new HttpHeaders().set("authorization", `Bearer ${cookieService.get("user_token")}`)
-                    }),
+                    link: authLink.concat(http),
                     cache: new InMemoryCache(),
                 };
             },

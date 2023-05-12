@@ -46,7 +46,7 @@ type GetAllEmployeesQueryResponse = {
             >
                 <ng-container matColumnDef="id">
                     <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
-                    <mat-cell *matCellDef="let employee"> {{ employee.id }} </mat-cell>
+                    <mat-cell *matCellDef="let employee"> <code class="py-1 px-2 bg-gray-600 rounded-md">{{ employee.id }}</code> </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="first_name">
                     <mat-header-cell *matHeaderCellDef> First Name </mat-header-cell>
